@@ -14,9 +14,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        currencyViewModel.getCurrency()
-        //currencyViewModel.getCountries()
-       // currencyViewModel.getCurrencyConverter()
-       // currencyViewModel.getCurrencyConverterWithDate()
+
     }
 }
