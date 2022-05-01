@@ -1,10 +1,9 @@
 package com.ahmed.domain.usecase
 
-import com.ahmed.domain.repository.CountriesRepository
 import com.ahmed.domain.repository.CurrencyRepository
 import javax.inject.Inject
 
-class GetCountriesUseCase @Inject constructor(private val countryRepo: CountriesRepository) {
+class GetCountriesUseCase @Inject constructor(private val currencyRepo : CurrencyRepository) {
 
-    fun invoke() = countryRepo.getAllCountries()
+    fun invoke() = currencyRepo.getAllCountries()
 }

@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         currencyViewModel.getCurrency()
-        currencyViewModel.getCountries()
+        //currencyViewModel.getCountries()
+       // currencyViewModel.getCurrencyConverter()
+       // currencyViewModel.getCurrencyConverterWithDate()
     }
 }

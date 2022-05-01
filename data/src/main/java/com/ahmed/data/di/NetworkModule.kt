@@ -1,5 +1,6 @@
 package com.ahmed.data.di
 
+import com.ahmed.data.core.getAPIKEY
 import com.ahmed.data.core.getBaseUrl
 import com.ahmed.data.remote.CurrencyAPI
 import dagger.Module
@@ -35,6 +36,7 @@ class NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(getBaseUrl())
             .client(okHttpClient)
+
             .build()
             .create(CurrencyAPI::class.java)
 
@@ -42,7 +44,9 @@ class NetworkModule {
     @Provides
     fun loggingInterceptor(): HttpLoggingInterceptor {
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS)
+            .setLevel(HttpLoggingInterceptor.Level.BODY)
+
         return loggingInterceptor
     }
 }
