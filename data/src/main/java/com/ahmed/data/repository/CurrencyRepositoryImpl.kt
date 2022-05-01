@@ -1,45 +1,73 @@
 package com.ahmed.data.repository
 
-import android.util.Log
-import com.ahmed.data.core.getAPIKEY
+import com.ahmed.data.local.CountriesDAO
+import com.ahmed.data.local.CurrencyDAO
 import com.ahmed.data.mapper.*
-import com.ahmed.data.model.Currencies
 import com.ahmed.data.remote.CurrencyAPI
 import com.ahmed.domain.entities.CountriesEntities
 import com.ahmed.domain.entities.CurrencyConverterEntity
 import com.ahmed.domain.entities.CurrencyEntities
 import com.ahmed.domain.repository.CurrencyRepository
+import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
-class CurrencyRepositoryImpl @Inject constructor(private val api: CurrencyAPI) :
-    CurrencyRepository {
+class CurrencyRepositoryImpl @Inject constructor(
+    private val api: CurrencyAPI,
+    private val currencyDAO: CurrencyDAO,
+    private val countryDAO: CountriesDAO
+) : CurrencyRepository {
 
     override fun getAllCurrency(): Single<List<CurrencyEntities>> {
         return api.getCurrency()
             .flatMap {
-                Single.just(it.mapToList().mapToDomain())
+                Completable.fromAction {
+                    currencyDAO.saveListOfCurrency(it.mapToList().mapToEntity())
+                }.andThen(Single.just(it.mapToList().mapToDomain()))
+            }.onErrorResumeNext {
+                currencyDAO.getCurrencyFromDatabase().map {
+                    it.mapToRemoteResponse().mapToDomain()
+                }
             }
+
     }
 
+    override fun getCurrencyListFromLocalStorage(): Single<List<CurrencyEntities>> {
+        return currencyDAO.getCurrencyFromDatabase().map {
+            it.mapToRemoteResponse().mapToDomain()
+        }
+    }
 
     override fun getAllCountries(): Single<List<CountriesEntities>> {
         return api.getCountries()
             .flatMap {
-                Single.just(it.mapToList().mapToCountriesDomain())
+                Completable.fromAction {
+                    countryDAO.saveListOfCountries(it.mapToList().mapToCountryEntity())
+                }.andThen(Single.just(it.mapToList().mapToCountriesDomain()))
+
+            }.onErrorResumeNext {
+                countryDAO.getCountryFromDatabase().map {
+                    it.mapToCountryRemoteResponse().mapToCountriesDomain()
+                }
             }
     }
 
+    override fun getCountryListFromLocalStorage(): Single<List<CountriesEntities>> {
+        return countryDAO.getCountryFromDatabase().map {
+            it.mapToCountryRemoteResponse().mapToCountriesDomain()
+        }
+    }
 
     override fun getConverterCurrency(
         baseCurrency: String,
         secondCurrency: String
     ): Single<CurrencyConverterEntity> {
         return api.getCurrencyConvert(
-            baseCurrency.plus(",").plus(secondCurrency))
+            baseCurrency.plus(",").plus(secondCurrency)
+        )
             .flatMap {
-            Single.just(it.mapToList().mapToCurrencyConverter())
-        }
+                Single.just(it.mapToList().mapToCurrencyConverter())
+            }
     }
 
 
@@ -49,7 +77,7 @@ class CurrencyRepositoryImpl @Inject constructor(private val api: CurrencyAPI) :
         date: String
     ): Single<CurrencyConverterEntity> {
         return api.getCurrencyConvertWithDate(
-            baseCurrency.plus(",").plus(secondCurrency),"",date
+            baseCurrency.plus(",").plus(secondCurrency), "", date
         ).flatMap {
             Single.just(it.mapToListWithDate().mapToCurrencyConverter())
         }

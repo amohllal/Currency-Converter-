@@ -1,6 +1,8 @@
 package com.ahmed.data.mapper
 
 import com.ahmed.data.model.*
+import com.ahmed.data.model.local.CountriesLocalEntity
+import com.ahmed.data.model.local.CurrencyLocalEntity
 import com.ahmed.domain.entities.CountriesEntities
 import com.ahmed.domain.entities.CurrencyConverterEntity
 import com.ahmed.domain.entities.CurrencyEntities
@@ -13,7 +15,19 @@ fun CurrencyModel.mapToList() = this.results.toList().map { hmap ->
     )
 }
 
+fun List<Currencies>.mapToEntity() = this.map{
+    CurrencyLocalEntity(currencyName = it.currencyName, currencySymbol = it.currencySymbol, id = it.id)
+}
+fun List<CurrencyLocalEntity>.mapToRemoteResponse() = this.map{
+    Currencies(currencyName = it.currencyName, currencySymbol = it.currencySymbol, id = it.id)
+}
+fun List<Countries>.mapToCountryEntity() = this.map {
+    CountriesLocalEntity(alpha3 = it.alpha3, currencyId = it.currencyId, currencyName = it.currencyName, currencySymbol = it.currencySymbol, id = it.id, name = it.name)
+}
 
+fun List<CountriesLocalEntity>.mapToCountryRemoteResponse() =this.map {
+    Countries(alpha3 = it.alpha3, currencyId = it.currencyId, currencyName = it.currencyName, currencySymbol = it.currencySymbol, id = it.id, name = it.name )
+}
 fun List<Currencies>.mapToDomain() = this.map {
     CurrencyEntities(currencyName = it.currencyName, currencySymbol = it.currencySymbol, id = it.id)
 }
