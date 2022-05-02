@@ -6,4 +6,7 @@ data class CurrencyEntities(
 	val currencyName: String,
 	val currencySymbol: String? = null,
 	val id: String,
-)
+){
+	override fun toString() = id
+
+}

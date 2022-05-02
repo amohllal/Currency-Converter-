@@ -5,8 +5,11 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import com.ahmed.currencyconverter.R
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class CustomProgressDialog(context: Context) {
+class CustomProgressDialog @Inject constructor(@ActivityContext context: Context) {
 
     var dialog: Dialog = Dialog(context)
 
