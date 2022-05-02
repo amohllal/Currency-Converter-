@@ -1,5 +1,6 @@
 package com.ahmed.currencyconverter.presentation.viewmodel
 
+import android.util.Log
 import com.ahmed.currencyconverter.presentation.core.BaseViewModel
 import com.ahmed.currencyconverter.presentation.core.wrapper.StateLiveData
 import com.ahmed.domain.entities.CountriesEntities
@@ -34,7 +35,8 @@ class CurrencyViewModel @Inject constructor(
                 .doOnSubscribe { currencyLiveData.postLoading() }
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
-                .subscribe({ response -> currencyLiveData.postSuccess(response) },
+                .subscribe({ response ->
+                    currencyLiveData.postSuccess(response) },
                     { error ->
                         currencyLiveData.postError(error)
                         error.printStackTrace()
@@ -47,7 +49,8 @@ class CurrencyViewModel @Inject constructor(
                 .doOnSubscribe { currencyLiveData.postLoading() }
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
-                .subscribe({ response -> currencyLiveData.postSuccess(response) },
+                .subscribe({ response ->
+                    currencyLiveData.postSuccess(response) },
                     { error ->
                         currencyLiveData.postError(error)
                         error.printStackTrace()
@@ -58,6 +61,21 @@ class CurrencyViewModel @Inject constructor(
     fun getRemoteCountries() {
         compositeDisposable.add(
             getCountriesUseCase.invoke()
+                .doOnSubscribe { countriesLiveData.postLoading() }
+                .subscribeOn(ioScheduler)
+                .observeOn(mainScheduler)
+                .subscribe({ response ->
+                    countriesLiveData.postSuccess(response)
+                },
+                    { error ->
+                        countriesLiveData.postError(error)
+                        error.printStackTrace()
+                    })
+        )
+    }
+    fun getLocalCountries() {
+        compositeDisposable.add(
+            getCountriesUseCase.getCountryFromDatabase()
                 .doOnSubscribe { countriesLiveData.postLoading() }
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)

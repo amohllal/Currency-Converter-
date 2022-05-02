@@ -1,5 +1,6 @@
 package com.ahmed.data.remote
 
+import com.ahmed.data.core.compact
 import com.ahmed.data.core.getAPIKEY
 import com.ahmed.data.model.CountriesModel
 import com.ahmed.data.model.CurrencyModel
@@ -18,14 +19,14 @@ interface CurrencyAPI {
     @GET("convert")
     fun getCurrencyConvert(
         @Query("q") currencySelector: String,
-        @Query("compact") ultra: String = "ultra",
+        @Query("compact") ultra: String = compact,
         @Query("apiKey") apiKey: String = getAPIKEY()
     ): Single<Map<String, String>>
 
     @GET("convert")
     fun getCurrencyConvertWithDate(
         @Query("q") currencySelector: String,
-        @Query("compact") ultra : String = "ultra",
+        @Query("compact") ultra : String ,
         @Query("date") date: String,
         @Query("apiKey") apiKey: String = getAPIKEY()
     ): Single<Map<String, Map<String, Double>>>

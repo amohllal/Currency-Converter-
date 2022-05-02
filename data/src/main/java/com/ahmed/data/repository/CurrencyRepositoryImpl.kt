@@ -1,5 +1,6 @@
 package com.ahmed.data.repository
 
+import com.ahmed.data.core.compact
 import com.ahmed.data.local.CountriesDAO
 import com.ahmed.data.local.CurrencyDAO
 import com.ahmed.data.mapper.*
@@ -77,7 +78,7 @@ class CurrencyRepositoryImpl @Inject constructor(
         date: String
     ): Single<CurrencyConverterEntity> {
         return api.getCurrencyConvertWithDate(
-            baseCurrency.plus(",").plus(secondCurrency), "", date
+            baseCurrency.plus(",").plus(secondCurrency), compact, date
         ).flatMap {
             Single.just(it.mapToListWithDate().mapToCurrencyConverter())
         }
