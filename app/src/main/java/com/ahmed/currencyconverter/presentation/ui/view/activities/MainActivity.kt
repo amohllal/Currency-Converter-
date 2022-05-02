@@ -3,10 +3,12 @@ package com.ahmed.currencyconverter.presentation.ui.view.activities
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.ahmed.currencyconverter.R
 import com.ahmed.currencyconverter.databinding.ActivityMainBinding
 import com.ahmed.currencyconverter.presentation.core.Connectivity
@@ -62,13 +64,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showProgressLoading(){
+        binding.contentLayout.isVisible = false
+        binding.progressLoading.isVisible = true
+
 
     }
     private fun hideProgressLoading(){
+        binding.progressLoading.isVisible = false
+        binding.contentLayout.isVisible = true
+
 
     }
     private fun handleError(){
-        hideProgressLoading()
+        binding.progressLoading.isVisible = false
         Toast.makeText(this,"Something happens please try again!",Toast.LENGTH_LONG).show()
     }
 

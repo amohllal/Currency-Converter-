@@ -3,7 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/GitHub/Currencyconverter/app/src/main/res/drawable-v24/filter_spinner.xml" value="0.13" />
+        <entry key="..\:/GitHub/Currencyconverter/app/src/main/res/drawable/arrow_down_24.xml" value="0.1" />
+        <entry key="..\:/GitHub/Currencyconverter/app/src/main/res/drawable/circle_shap.xml" value="0.13" />
+        <entry key="..\:/GitHub/Currencyconverter/app/src/main/res/drawable/currency_icon.xml" value="0.13" />
+        <entry key="..\:/GitHub/Currencyconverter/app/src/main/res/drawable/edittext_shape.xml" value="0.1" />
+        <entry key="..\:/GitHub/Currencyconverter/app/src/main/res/drawable/filter_spinner.xml" value="0.13" />
+        <entry key="..\:/GitHub/Currencyconverter/app/src/main/res/drawable/sync_.xml" value="0.13" />
         <entry key="..\:/GitHub/Currencyconverter/app/src/main/res/layout/activity_main.xml" value="0.14895833333333333" />
+        <entry key="..\:/GitHub/Currencyconverter/app/src/main/res/layout/custom_progress_dialog.xml" value="0.14895833333333333" />
       </map>
     </option>
   </component>
