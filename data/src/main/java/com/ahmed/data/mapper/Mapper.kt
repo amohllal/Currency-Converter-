@@ -4,10 +4,7 @@ import android.util.Log
 import com.ahmed.data.model.*
 import com.ahmed.data.model.local.CountriesLocalEntity
 import com.ahmed.data.model.local.CurrencyLocalEntity
-import com.ahmed.domain.entities.CountriesEntities
-import com.ahmed.domain.entities.CurrenciesDate
-import com.ahmed.domain.entities.CurrencyConverterEntity
-import com.ahmed.domain.entities.CurrencyEntities
+import com.ahmed.domain.entities.*
 
 fun CurrencyModel.mapToList() = this.results.toList().map { hmap ->
     Currencies(
@@ -101,15 +98,27 @@ fun Map<String, Map<String, Double>>.mapToListDate(): CurrenciesListModel {
     val baseCurrencyList = this.entries.first().value.entries.map {
         it.value.toString()
     }
+    val baseCurrencyDateList = this.entries.first().value.entries.map {
+        it.key
+    }
     val secondCurrencyList = this.entries.last().value.entries.map {
         it.value.toString()
     }
-    return CurrenciesListModel(baseCurrencyList,secondCurrencyList)
+    val secondCurrencyDateList = this.entries.last().value.entries.map {
+        it.key
+    }
+    val baseCurrencies = BaseCurrencies(baseCurrencyDateList,baseCurrencyList)
+    val secondCurrencies = SecondCurrencies(secondCurrencyDateList,secondCurrencyList)
+    return CurrenciesListModel(baseCurrencies,secondCurrencies)
 }
 
 
-fun CurrenciesListModel.mapToCurrencyListDomain() =
-    CurrenciesDate(baseCurrency = this.baseCurrency, secondCurrency = this.secondCurrency)
+fun CurrenciesListModel.mapToCurrencyListDomain():CurrenciesDate{
+    val baseCurrencies = BaseCurrenciesEntity(this.baseCurrency.date,this.baseCurrency.currency)
+    val secondCurrencies = SecondCurrenciesEntity(this.secondCurrency.date,this.secondCurrency.currency)
+
+    return CurrenciesDate(baseCurrencyEntity = baseCurrencies, secondCurrencyEntity = secondCurrencies)
+}
 
 
 
