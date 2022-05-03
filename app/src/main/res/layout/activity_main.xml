@@ -19,8 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <LinearLayout
-        android:id="@+id/content_layout"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -28,158 +27,215 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
+            android:id="@+id/content_layout"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:backgroundTint="@color/blue_black"
-            android:layout_marginTop="100dp"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="8dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/base_country_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Egypt"
-                    android:textSize="14sp"
-                    android:padding="8dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
-                    android:textColor="@color/white"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:backgroundTint="@color/blue_black"
+                android:layout_marginTop="50dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="8dp">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="10dp">
-                    <EditText
-                        android:id="@+id/base_currency_et"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:hint="value"
-                        android:textColorHint="@color/white"
-                        android:layout_weight="1"
-                        android:inputType="numberDecimal"
-                        android:padding="4dp"
-                        android:textColor="@color/white"
-                        android:background="@drawable/edittext_shape"
-                        android:layout_marginEnd="4dp"/>
-                    <Spinner
-                        android:id="@+id/base_currency_spinner"
-                        android:layout_width="100dp"
-                        android:layout_height="40dp"
-                        android:textSize="12sp"
-                        android:layout_margin="6dp"
-                        android:background="@drawable/filter_spinner" />
-
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/base_currency_name_tv"
+                        android:id="@+id/base_country_title_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="EUR"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-
-                </LinearLayout>
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/sync_btn"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@drawable/circle_shape"
-            android:layout_gravity="center"
-            android:text="Sync"
-            android:textAllCaps="false"
-            android:layout_marginTop="8dp"/>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:backgroundTint="@color/blue_black"
-            android:layout_marginTop="8dp"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="8dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/second_country_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Egypt"
-                    android:textSize="14sp"
-                    android:padding="8dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
-                    android:textColor="@color/white"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="10dp">
-                    <EditText
-                        android:id="@+id/second_currency_et"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:hint="value"
-                        android:textColorHint="@color/white"
-                        android:layout_weight="1"
-                        android:inputType="numberDecimal"
-                        android:padding="4dp"
-                        android:textColor="@color/white"
-                        android:background="@drawable/edittext_shape"
-                        android:layout_marginEnd="4dp"/>
-                    <Spinner
-                        android:id="@+id/second_currency_spinner"
-                        android:layout_width="100dp"
-                        android:layout_height="40dp"
-                        android:textSize="12sp"
-                        android:layout_margin="6dp"
-                        android:background="@drawable/filter_spinner" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/second_currency_name_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="EUR"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
+                        android:padding="8dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
                         android:textColor="@color/white"/>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp">
+                        <EditText
+                            android:id="@+id/base_currency_et"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:hint="value"
+                            android:textColorHint="@color/white"
+                            android:layout_weight="1"
+                            android:inputType="numberDecimal"
+                            android:padding="4dp"
+                            android:textColor="@color/white"
+                            android:background="@drawable/edittext_shape"
+                            android:layout_marginEnd="4dp"/>
+                        <Spinner
+                            android:id="@+id/base_currency_spinner"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:textSize="12sp"
+                            android:layout_margin="6dp"
+                            android:background="@drawable/filter_spinner" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/base_currency_name_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sync_btn"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/circle_shape"
+                android:layout_gravity="center"
+                android:text="Sync"
+                android:textAllCaps="false"
+                android:layout_marginTop="8dp"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:backgroundTint="@color/blue_black"
+                android:layout_marginTop="8dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="8dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/second_country_title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:padding="8dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/white"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp">
+                        <EditText
+                            android:id="@+id/second_currency_et"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:hint="value"
+                            android:textColorHint="@color/white"
+                            android:layout_weight="1"
+                            android:inputType="numberDecimal"
+                            android:padding="4dp"
+                            android:textColor="@color/white"
+                            android:background="@drawable/edittext_shape"
+                            android:layout_marginEnd="4dp"/>
+                        <Spinner
+                            android:id="@+id/second_currency_spinner"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:textSize="12sp"
+                            android:layout_margin="6dp"
+                            android:background="@drawable/filter_spinner" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/second_currency_name_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"/>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sync_date_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/edittext_shape"
+                android:layout_gravity="center"
+                android:text="Sync for the last week"
+                android:textAllCaps="false"
+                android:layout_marginTop="8dp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/base_currency_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:padding="8dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/white"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/first_currency_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/currency_item"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/second_currency_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:padding="8dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/white"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/second_currency_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/currency_item"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        />
+
+                </LinearLayout>
+
             </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/sync_date_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:background="@drawable/edittext_shape"
-            android:layout_gravity="center"
-            android:text="Sync for the last week"
-            android:textAllCaps="false"
-            android:layout_marginTop="8dp"/>
-
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

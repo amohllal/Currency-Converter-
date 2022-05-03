@@ -126,8 +126,6 @@ class CurrencyViewModel @Inject constructor(
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
                 .subscribe({ response ->
-                    Log.d("TAG", "getCurrencyListWithDate: ${response.baseCurrencyEntity.currency[0]}")
-                    Log.d("TAG", "getCurrencyListWithDate: ${response.baseCurrencyEntity.date[0]}")
                     currencyListLiveData.postSuccess(response)
                 },
                     { error ->

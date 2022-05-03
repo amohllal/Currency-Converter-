@@ -15,9 +15,12 @@ import com.ahmed.currencyconverter.R
 import com.ahmed.currencyconverter.databinding.ActivityMainBinding
 import com.ahmed.currencyconverter.presentation.core.Connectivity
 import com.ahmed.currencyconverter.presentation.core.wrapper.DataStatus
+import com.ahmed.currencyconverter.presentation.ui.adapter.BaseCurrencyRecyclerAdapter
+import com.ahmed.currencyconverter.presentation.ui.adapter.SecondCurrencyRecyclerAdapter
 import com.ahmed.currencyconverter.presentation.ui.dialog.CustomProgressDialog
 import com.ahmed.currencyconverter.presentation.viewmodel.CurrencyViewModel
 import com.ahmed.domain.entities.CountriesEntities
+import com.ahmed.domain.entities.CurrenciesDate
 import com.ahmed.domain.entities.CurrencyConverterEntity
 import com.ahmed.domain.entities.CurrencyEntities
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +44,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     @Inject
     lateinit var customProgressLoading: CustomProgressDialog
 
+    @Inject
+    lateinit var baseRecyclerAdapter : BaseCurrencyRecyclerAdapter
+    @Inject
+    lateinit var secondRecyclerAdapter : SecondCurrencyRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -48,11 +55,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getCurrenciesAndCountries()
         }
-       initViews()
-        currencyViewModel.getCurrencyListWithDate("USD_PHP","PHP_USD","2022-4-25","2022-5-2")
+        initViews()
     }
 
-    private fun initViews(){
+    private fun initViews() {
         binding.syncBtn.setOnClickListener(this)
         binding.syncDateBtn.setOnClickListener(this)
     }
@@ -210,42 +216,46 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    private fun hitCurrencyConverterAPI(date: String?) {
+    private fun validation() : Boolean {
         if (selectedBaseCurrency.isNullOrEmpty() || selectedSecondCurrency.isNullOrEmpty()) {
             Toast.makeText(this, "You must select your currencies", Toast.LENGTH_LONG).show()
-            return
+            return false
         }
         if (selectedBaseCurrency == selectedSecondCurrency) {
             Toast.makeText(this, "You must select you different currencies", Toast.LENGTH_LONG)
                 .show()
-            return
+            return false
         }
 
-        if (binding.baseCurrencyEt.text.isNullOrEmpty() && binding.secondCurrencyEt.text.isNullOrEmpty()) {
-            Toast.makeText(this, "You must insert any currency value", Toast.LENGTH_LONG).show()
-            return
+        return true
 
-        }
-        if (binding.secondCurrencyEt.text.isNotEmpty() && binding.baseCurrencyEt.text.isNotEmpty()) {
-            Toast.makeText(
-                this,
-                "You must insert maximum one value at any field",
-                Toast.LENGTH_LONG
-            ).show()
-            binding.secondCurrencyEt.text.clear()
-            binding.baseCurrencyEt.text.clear()
+    }
 
-        } else {
-            baseCurrency = selectedBaseCurrency.plus("_").plus(selectedSecondCurrency)
-            secondCurrency = selectedSecondCurrency.plus("_").plus(selectedBaseCurrency)
+    private fun hitCurrencyConverterAPI() {
+        if (validation()){
+            if (binding.baseCurrencyEt.text.isNullOrEmpty() && binding.secondCurrencyEt.text.isNullOrEmpty()) {
+                Toast.makeText(this, "You must insert any currency value", Toast.LENGTH_LONG).show()
+                return
 
-            if (date.isNullOrEmpty()) {
-                currencyViewModel.getCurrencyConverter(baseCurrency, secondCurrency)
-            } else {
-                currencyViewModel.getCurrencyConverterWithDate(baseCurrency, secondCurrency, date)
             }
-            observeOnCurrencyConverter()
+            if (binding.secondCurrencyEt.text.isNotEmpty() && binding.baseCurrencyEt.text.isNotEmpty()) {
+                Toast.makeText(
+                    this,
+                    "You must insert maximum one value at any field",
+                    Toast.LENGTH_LONG
+                ).show()
+                binding.secondCurrencyEt.text.clear()
+                binding.baseCurrencyEt.text.clear()
+
+            } else {
+
+                baseCurrency = selectedBaseCurrency.plus("_").plus(selectedSecondCurrency)
+                secondCurrency = selectedSecondCurrency.plus("_").plus(selectedBaseCurrency)
+                currencyViewModel.getCurrencyConverter(baseCurrency, secondCurrency)
+                observeOnCurrencyConverter()
+            }
         }
+
 
 
     }
@@ -261,6 +271,46 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun hitCurrencyWithDateAPI(date: Pair<String, String>) {
+        if (validation()){
+            baseCurrency = selectedBaseCurrency.plus("_").plus(selectedSecondCurrency)
+            secondCurrency = selectedSecondCurrency.plus("_").plus(selectedBaseCurrency)
+            currencyViewModel.getCurrencyListWithDate(
+                baseCurrency, secondCurrency,
+                date.first, date.second
+            )
+            observeOnCurrencyDateList()
+
+        }
+    }
+
+    private fun observeOnCurrencyDateList() {
+        currencyViewModel.currencyListLiveData.observe(this) {
+            when (it?.status) {
+                DataStatus.Status.LOADING -> showConverterLoading()
+                DataStatus.Status.SUCCESS -> handleCurrencyListSuccess(it.data)
+                DataStatus.Status.ERROR -> handleConverterError()
+
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun handleCurrencyListSuccess(data: CurrenciesDate?) {
+            hideConverterLoading()
+        binding.baseCurrencyTv.text = baseCurrency
+        binding.secondCurrencyTv.text = secondCurrency
+        baseRecyclerAdapter.setCurrencyDateList(data?.baseCurrencyEntity?.date as ArrayList<String>)
+        baseRecyclerAdapter.setCurrencyList(data.baseCurrencyEntity.currency as ArrayList<String>)
+        secondRecyclerAdapter.setCurrencyDateList(data.secondCurrencyEntity.date as ArrayList<String>)
+        secondRecyclerAdapter.setCurrencyList(data.secondCurrencyEntity.currency as ArrayList<String>)
+        binding.firstCurrencyRv.adapter = baseRecyclerAdapter
+        binding.secondCurrencyRv.adapter = secondRecyclerAdapter
+        baseRecyclerAdapter.notifyDataSetChanged()
+        secondRecyclerAdapter.notifyDataSetChanged()
+
+    }
+
     private fun handleSuccessConverter(data: CurrencyConverterEntity?) {
         hideConverterLoading()
         setCurrencyConverterDataToViews(data)
@@ -270,12 +320,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setCurrencyConverterDataToViews(data: CurrencyConverterEntity?) {
         val mNumberFormat = NumberFormat.getInstance()
         mNumberFormat.maximumFractionDigits = 2
-            if (binding.baseCurrencyEt.text.isNotEmpty()){
-                binding.secondCurrencyEt.setText((mNumberFormat.format(data?.baseCurrency?.toDouble()
-                    ?.times(binding.baseCurrencyEt.text.toString().toDouble())).toString()))
-            }else if (binding.secondCurrencyEt.text.isNotEmpty()){
-                binding.baseCurrencyEt.setText((mNumberFormat.format(binding.secondCurrencyEt.text.toString().toDouble().div(data?.baseCurrency?.toDouble()!!)).toString()))
-            }
+        if (binding.baseCurrencyEt.text.isNotEmpty()) {
+            binding.secondCurrencyEt.setText(
+                (mNumberFormat.format(
+                    data?.baseCurrency?.toDouble()
+                        ?.times(binding.baseCurrencyEt.text.toString().toDouble())
+                ).toString())
+            )
+        } else if (binding.secondCurrencyEt.text.isNotEmpty()) {
+            binding.baseCurrencyEt.setText(
+                (mNumberFormat.format(
+                    binding.secondCurrencyEt.text.toString().toDouble()
+                        .div(data?.baseCurrency?.toDouble()!!)
+                ).toString())
+            )
+        }
     }
 
     private fun handleConverterError() {
@@ -293,17 +352,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun getDate(): String {
+    private fun getDate(): Pair<String, String> {
         val calendar: Calendar = Calendar.getInstance()
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val currentDate = simpleDateFormat.format(calendar.time)
         calendar.add(Calendar.DAY_OF_WEEK, -7)
-        return simpleDateFormat.format(calendar.time)
+        val lastDate = simpleDateFormat.format(calendar.time)
+        return Pair(lastDate, currentDate)
     }
 
     override fun onClick(p0: View) {
         when (p0.id) {
-            R.id.sync_btn -> hitCurrencyConverterAPI(null)
-            R.id.sync_date_btn -> hitCurrencyConverterAPI(getDate())
+            R.id.sync_btn -> hitCurrencyConverterAPI()
+            R.id.sync_date_btn -> hitCurrencyWithDateAPI(getDate())
         }
     }
 
