@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             getCurrenciesAndCountries()
         }
        initViews()
+        currencyViewModel.getCurrencyListWithDate("USD_PHP","PHP_USD","2022-4-25","2022-5-2")
     }
 
     private fun initViews(){
@@ -211,7 +212,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun hitCurrencyConverterAPI(date: String?) {
         if (selectedBaseCurrency.isNullOrEmpty() || selectedSecondCurrency.isNullOrEmpty()) {
-            Toast.makeText(this, "You must select you currencies", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "You must select your currencies", Toast.LENGTH_LONG).show()
             return
         }
         if (selectedBaseCurrency == selectedSecondCurrency) {

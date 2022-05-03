@@ -30,4 +30,13 @@ interface CurrencyAPI {
         @Query("date") date: String,
         @Query("apiKey") apiKey: String = getAPIKEY()
     ): Single<Map<String, Map<String, Double>>>
+
+    @GET("convert")
+    fun getCurrencyListWithDate(
+        @Query("q") currencySelector: String,
+        @Query("compact") ultra : String ,
+        @Query("date") date: String,
+        @Query("endDate") currentDate: String,
+        @Query("apiKey") apiKey: String = getAPIKEY()
+    ): Single<Map<String, Map<String, Double>>>
 }

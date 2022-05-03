@@ -1,11 +1,13 @@
 package com.ahmed.data.repository
 
+import android.util.Log
 import com.ahmed.data.core.compact
 import com.ahmed.data.local.CountriesDAO
 import com.ahmed.data.local.CurrencyDAO
 import com.ahmed.data.mapper.*
 import com.ahmed.data.remote.CurrencyAPI
 import com.ahmed.domain.entities.CountriesEntities
+import com.ahmed.domain.entities.CurrenciesDate
 import com.ahmed.domain.entities.CurrencyConverterEntity
 import com.ahmed.domain.entities.CurrencyEntities
 import com.ahmed.domain.repository.CurrencyRepository
@@ -81,6 +83,22 @@ class CurrencyRepositoryImpl @Inject constructor(
             baseCurrency.plus(",").plus(secondCurrency), compact, date
         ).flatMap {
             Single.just(it.mapToListWithDate().mapToCurrencyConverter())
+        }
+    }
+
+    override fun getCurrencyListWithDate(
+        baseCurrency: String,
+        secondCurrency: String,
+        lastDate: String,
+        currentDate: String
+    ): Single<CurrenciesDate> {
+        return api.getCurrencyListWithDate(
+            baseCurrency.plus(",").plus(secondCurrency),
+            compact,
+            lastDate,
+            currentDate
+        ).flatMap {
+            Single.just(it.mapToListDate().mapToCurrencyListDomain())
         }
     }
 }
