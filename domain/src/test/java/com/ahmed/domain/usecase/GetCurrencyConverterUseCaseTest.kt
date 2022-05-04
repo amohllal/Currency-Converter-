@@ -25,14 +25,14 @@ class GetCurrencyConverterUseCaseTest {
         //arrange
         val baseCurrency = "HKD_IDR"
         val secondCurrency = "IDR_HKD"
-
-        //act
         val currencyConverterEntity =
             CurrencyConverterEntity("1842.989039", "0.000543")
         `when`(currencyRepo.getConverterCurrency(baseCurrency,secondCurrency ))
             .thenReturn(Single.just(currencyConverterEntity))
+
+        //act
         val result =
-            GetCurrencyConverterUseCase(currencyRepo).invoke(baseCurrency, secondCurrency)?.blockingGet()
+            GetCurrencyConverterUseCase(currencyRepo).invoke(baseCurrency, secondCurrency).blockingGet()
 
         //assert
         assertEquals(result, currencyConverterEntity)
@@ -44,17 +44,11 @@ class GetCurrencyConverterUseCaseTest {
         val baseCurrency = "HKD_IDR"
         val secondCurrency = "IDR_HKD"
 
-        val currencyRepository = object : CurrencyRepository {
-            override fun getConverterCurrency(
-                baseCurrency: String,
-                secondCurrency: String
-            ): Single<CurrencyConverterEntity> {
-                throw UnknownHostException()
-            }
-        }
+        `when`(currencyRepo.getConverterCurrency(baseCurrency, secondCurrency)).then { throw UnknownHostException() }
 
 
-        GetCurrencyConverterUseCase(currencyRepository).invoke(baseCurrency, secondCurrency)?.blockingGet()
+
+        GetCurrencyConverterUseCase(currencyRepo).invoke(baseCurrency, secondCurrency).blockingGet()
 
 
     }

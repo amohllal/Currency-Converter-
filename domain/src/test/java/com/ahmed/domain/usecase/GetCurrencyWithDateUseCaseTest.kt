@@ -11,6 +11,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import java.net.UnknownHostException
 
 class GetCurrencyWithDateUseCaseTest {
@@ -85,7 +86,7 @@ class GetCurrencyWithDateUseCaseTest {
 
         val result = GetCurrenciesListWithDateUseCase(currencyRepo).invoke(
             baseCurrency, secondCurrency, lastDate, currentDate
-        )?.blockingGet()
+        ).blockingGet()
 
         assertEquals(result, currencyDate)
     }
@@ -98,20 +99,13 @@ class GetCurrencyWithDateUseCaseTest {
         val lastDate = "2022-4-28"
         val currentDate = "2022-5-4"
 
-        val currencyRepository = object : CurrencyRepository {
-            override fun getCurrencyListWithDate(
-                baseCurrency: String,
-                secondCurrency: String,
-                lastDate: String,
-                currentDate: String
-            ): Single<CurrenciesDate>? {
-                throw UnknownHostException()
-            }
-        }
 
-        GetCurrenciesListWithDateUseCase(currencyRepository).invoke(
+        `when`(currencyRepo.getCurrencyListWithDate(baseCurrency, secondCurrency, lastDate, currentDate)).then { throw UnknownHostException() }
+
+
+        GetCurrenciesListWithDateUseCase(currencyRepo).invoke(
             baseCurrency, secondCurrency, lastDate, currentDate
-        )?.blockingGet()
+        ).blockingGet()
 
     }
 }

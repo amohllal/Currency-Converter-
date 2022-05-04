@@ -27,7 +27,7 @@ class GetCurrencyUseCaseTest {
 
         `when`(currencyRepo.getAllCurrency()).thenReturn(Single.just(currencyList))
 
-        val result = GetCurrencyUseCase(currencyRepo).invoke()?.blockingGet()
+        val result = GetCurrencyUseCase(currencyRepo).invoke().blockingGet()
 
         assertEquals(result, currencyList)
     }
@@ -43,7 +43,7 @@ class GetCurrencyUseCaseTest {
 
         `when`(currencyRepo.getCurrencyListFromLocalStorage()).thenReturn(Single.just(currencyList))
 
-        val result = GetCurrencyUseCase(currencyRepo).getCurrencyFromDatabase()?.blockingGet()
+        val result = GetCurrencyUseCase(currencyRepo).getCurrencyFromDatabase().blockingGet()
 
         assertEquals(result, currencyList)
     }
