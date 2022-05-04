@@ -22,24 +22,27 @@ class GetCurrencyConverterUseCaseTest {
 
     @Test
     fun `getCurrencyConverter() when internet connected,base currency and second currency not null then return currency value`() {
+        //arrange
+        val baseCurrency = "HKD_IDR"
+        val secondCurrency = "IDR_HKD"
+
+        //act
         val currencyConverterEntity =
             CurrencyConverterEntity("1842.989039", "0.000543")
-
-        `when`(currencyRepo.getConverterCurrency("HKD_IDR", "IDR_HKD"))
+        `when`(currencyRepo.getConverterCurrency(baseCurrency,secondCurrency ))
             .thenReturn(Single.just(currencyConverterEntity))
-
         val result =
-            GetCurrencyConverterUseCase(currencyRepo).invoke("HKD_IDR", "IDR_HKD")?.blockingGet()
+            GetCurrencyConverterUseCase(currencyRepo).invoke(baseCurrency, secondCurrency)?.blockingGet()
 
+        //assert
         assertEquals(result, currencyConverterEntity)
     }
 
     @SuppressLint("CheckResult")
     @Test(expected = UnknownHostException::class)
     fun `getCurrencyConverter() when internet disconnected,base currency and second currency not null it should throw UnknownHostException`() {
-        val currencyConverterEntity =
-            CurrencyConverterEntity("1842.989039", "0.000543")
-
+        val baseCurrency = "HKD_IDR"
+        val secondCurrency = "IDR_HKD"
 
         val currencyRepository = object : CurrencyRepository {
             override fun getConverterCurrency(
@@ -51,7 +54,7 @@ class GetCurrencyConverterUseCaseTest {
         }
 
 
-        GetCurrencyConverterUseCase(currencyRepository).invoke("HKD_IDR", "IDR_HKD")?.blockingGet()
+        GetCurrencyConverterUseCase(currencyRepository).invoke(baseCurrency, secondCurrency)?.blockingGet()
 
 
     }
