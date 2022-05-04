@@ -290,7 +290,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 DataStatus.Status.LOADING -> showConverterLoading()
                 DataStatus.Status.SUCCESS -> handleCurrencyListSuccess(it.data)
                 DataStatus.Status.ERROR -> handleConverterError()
-
+                else -> {}
             }
         }
     }
