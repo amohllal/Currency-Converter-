@@ -23,6 +23,7 @@ import com.ahmed.domain.entities.CountriesEntities
 import com.ahmed.domain.entities.CurrenciesDate
 import com.ahmed.domain.entities.CurrencyConverterEntity
 import com.ahmed.domain.entities.CurrencyEntities
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var selectedSecondCurrency: String? = null
     private lateinit var baseCurrency: String
     private lateinit var secondCurrency: String
-
+    private val countryFlagUrl = "https://flagcdn.com/32x24/"
     @Inject
     lateinit var customProgressLoading: CustomProgressDialog
 
@@ -83,7 +84,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         selectedBaseCurrency = currencyList[parent!!.selectedItemPosition].id
                         countryList.forEach {
                             if (it.currencyId == selectedBaseCurrency) {
-                                setBaseCurrencyDataToViews(it.name, it.currencyName)
+                                setBaseCurrencyDataToViews(it.name, it.currencyName,it.id)
 
                             }
                         }
@@ -121,7 +122,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         selectedSecondCurrency = currencyList[parent!!.selectedItemPosition].id
                         countryList.forEach {
                             if (it.currencyId == selectedSecondCurrency) {
-                                setSecondCurrencyDataToViews(it.name, it.currencyName)
+                                setSecondCurrencyDataToViews(it.name, it.currencyName,it.id)
                             }
                         }
 
@@ -138,15 +139,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    private fun setSecondCurrencyDataToViews(name: String, currencyName: String) {
+    private fun setSecondCurrencyDataToViews(name: String, currencyName: String, countryId : String) {
         binding.secondCountryTitleTv.text = name
         binding.secondCurrencyNameTv.text = currencyName
+        Picasso.get()
+            .load(countryFlagUrl.plus(countryId.lowercase().plus(".png")))
+            .into(binding.secondCountryFlagIv)
 
     }
 
-    private fun setBaseCurrencyDataToViews(name: String, currencyName: String) {
+    private fun setBaseCurrencyDataToViews(name: String, currencyName: String,countryId : String) {
         binding.baseCountryTitleTv.text = name
         binding.baseCurrencyNameTv.text = currencyName
+        Picasso.get()
+            .load(countryFlagUrl.plus(countryId.lowercase().plus(".png")))
+            .into(binding.baseCountryFlagIv)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
