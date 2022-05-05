@@ -43,7 +43,7 @@ Clone this project on your machine by running
   - reduce the boilerplate code
 -   [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html)
 -   [RxJava2](https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0)
-
+-   [Obfuscating](https://developer.android.com/studio/build/shrink-code)
 -   [NDK For Security](https://www.geeksforgeeks.org/securing-api-keys-using-android-ndk/)
 -   [Retrofit](http://square.github.io/retrofit/)
 -   [Picasso](https://github.com/square/picasso)
