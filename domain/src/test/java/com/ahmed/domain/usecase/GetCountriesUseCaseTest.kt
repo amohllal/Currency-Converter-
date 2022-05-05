@@ -37,26 +37,5 @@ class GetCountriesUseCaseTest {
         assertEquals(result, countryList)
     }
 
-    @Test
-    fun `getCountryList() when internet disconnected then return countryList from localStorage`() {
-        val countryEntity =
-            CountriesEntities("AFG", "AFN", "Afghan afghani", null, "AF", "Afghanistan")
-        val countryEntityII =
-            CountriesEntities(
-                "AIA", "XCD",
-                "East Caribbean dollar", null,
-                "AI", "Anguilla"
-            )
-        val countryList = ArrayList<CountriesEntities>()
-        countryList.add(countryEntity)
-        countryList.add(countryEntityII)
-
-        Mockito.`when`(currencyRepo.getCountryListFromLocalStorage())
-            .thenReturn(Single.just(countryList))
-
-        val result = GetCountriesUseCase(currencyRepo).getCountryFromDatabase()?.blockingGet()
-
-        assertEquals(result, countryList)
-    }
 
 }

@@ -42,20 +42,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var baseCurrency: String
     private lateinit var secondCurrency: String
     private val countryFlagUrl = "https://flagcdn.com/32x24/"
+
     @Inject
     lateinit var customProgressLoading: CustomProgressDialog
 
     @Inject
-    lateinit var baseRecyclerAdapter : BaseCurrencyRecyclerAdapter
+    lateinit var baseRecyclerAdapter: BaseCurrencyRecyclerAdapter
+
     @Inject
-    lateinit var secondRecyclerAdapter : SecondCurrencyRecyclerAdapter
+    lateinit var secondRecyclerAdapter: SecondCurrencyRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getCurrenciesAndCountries()
-        }
+        getCurrenciesAndCountries()
         initViews()
     }
 
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         selectedBaseCurrency = currencyList[parent!!.selectedItemPosition].id
                         countryList.forEach {
                             if (it.currencyId == selectedBaseCurrency) {
-                                setBaseCurrencyDataToViews(it.name, it.currencyName,it.id)
+                                setBaseCurrencyDataToViews(it.name, it.currencyName, it.id)
 
                             }
                         }
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         selectedSecondCurrency = currencyList[parent!!.selectedItemPosition].id
                         countryList.forEach {
                             if (it.currencyId == selectedSecondCurrency) {
-                                setSecondCurrencyDataToViews(it.name, it.currencyName,it.id)
+                                setSecondCurrencyDataToViews(it.name, it.currencyName, it.id)
                             }
                         }
 
@@ -139,7 +139,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    private fun setSecondCurrencyDataToViews(name: String, currencyName: String, countryId : String) {
+    private fun setSecondCurrencyDataToViews(
+        name: String,
+        currencyName: String,
+        countryId: String
+    ) {
         binding.secondCountryTitleTv.text = name
         binding.secondCurrencyNameTv.text = currencyName
         Picasso.get()
@@ -148,7 +152,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    private fun setBaseCurrencyDataToViews(name: String, currencyName: String,countryId : String) {
+    private fun setBaseCurrencyDataToViews(name: String, currencyName: String, countryId: String) {
         binding.baseCountryTitleTv.text = name
         binding.baseCurrencyNameTv.text = currencyName
         Picasso.get()
@@ -156,15 +160,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .into(binding.baseCountryFlagIv)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun getCurrenciesAndCountries() {
-        if (Connectivity.isOnline(this)) {
-            currencyViewModel.getRemoteCurrency()
-            currencyViewModel.getRemoteCountries()
-        } else {
-            currencyViewModel.getLocalCurrency()
-            currencyViewModel.getLocalCountries()
-        }
+        currencyViewModel.getCurrency()
+        currencyViewModel.getCountries()
+
         observeOnCurrenciesList()
         observeOnCountries()
 
@@ -183,9 +182,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun handleCurrenciesListSuccessData(data: List<CurrencyEntities>?) {
         hideProgressLoading()
-        currencyList.addAll(data ?: emptyList())
-        initBaseCurrencySpinner()
-        initSecondCurrencySpinner()
+        if (data.isNullOrEmpty()){
+            Toast.makeText(this, "Something happens please try again!", Toast.LENGTH_LONG).show()
+            binding.contentLayout.isVisible = false
+        }else{
+            currencyList.addAll(data)
+            initBaseCurrencySpinner()
+            initSecondCurrencySpinner()
+        }
 
     }
 
@@ -219,11 +223,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun handleCountriesSuccessData(data: List<CountriesEntities>?) {
-        countryList.addAll(data ?: emptyList())
+        if (data.isNullOrEmpty()){
+            binding.contentLayout.isVisible = false
+        }else{
+            countryList.addAll(data)
+        }
 
     }
 
-    private fun validation() : Boolean {
+    private fun validation(): Boolean {
         if (selectedBaseCurrency.isNullOrEmpty() || selectedSecondCurrency.isNullOrEmpty()) {
             Toast.makeText(this, "You must select your currencies", Toast.LENGTH_LONG).show()
             return false
@@ -239,7 +247,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun hitCurrencyConverterAPI() {
-        if (validation()){
+        if (validation()) {
             if (binding.baseCurrencyEt.text.isNullOrEmpty() && binding.secondCurrencyEt.text.isNullOrEmpty()) {
                 Toast.makeText(this, "You must insert any currency value", Toast.LENGTH_LONG).show()
                 return
@@ -264,7 +272,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
 
-
     }
 
     private fun observeOnCurrencyConverter() {
@@ -279,7 +286,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun hitCurrencyWithDateAPI(date: Pair<String, String>) {
-        if (validation()){
+        if (validation()) {
             baseCurrency = selectedBaseCurrency.plus("_").plus(selectedSecondCurrency)
             secondCurrency = selectedSecondCurrency.plus("_").plus(selectedBaseCurrency)
             currencyViewModel.getCurrencyListWithDate(
@@ -304,7 +311,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun handleCurrencyListSuccess(data: CurrenciesDate?) {
-            hideConverterLoading()
+        hideConverterLoading()
         binding.baseCurrencyTv.text = baseCurrency
         binding.secondCurrencyTv.text = secondCurrency
         baseRecyclerAdapter.setCurrencyDateList(data?.baseCurrencyEntity?.date as ArrayList<String>)

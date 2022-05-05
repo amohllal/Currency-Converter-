@@ -31,20 +31,4 @@ class GetCurrencyUseCaseTest {
 
         assertEquals(result, currencyList)
     }
-
-
-    @Test
-    fun `getCurrenciesList() when internet disconnected then return currenciesList from localStorage`() {
-        val currencyEntity = CurrencyEntities("Albanian Lek", null, "ALL")
-        val currencyEntityII = CurrencyEntities("East Caribbean Dollar", null, "XCD")
-        val currencyList = ArrayList<CurrencyEntities>()
-        currencyList.add(currencyEntity)
-        currencyList.add(currencyEntityII)
-
-        `when`(currencyRepo.getCurrencyListFromLocalStorage()).thenReturn(Single.just(currencyList))
-
-        val result = GetCurrencyUseCase(currencyRepo).getCurrencyFromDatabase().blockingGet()
-
-        assertEquals(result, currencyList)
-    }
 }

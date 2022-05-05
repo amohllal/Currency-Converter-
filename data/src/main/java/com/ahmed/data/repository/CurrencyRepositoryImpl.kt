@@ -35,11 +35,7 @@ class CurrencyRepositoryImpl @Inject constructor(
 
     }
 
-    override fun getCurrencyListFromLocalStorage(): Single<List<CurrencyEntities>> {
-        return currencyDAO.getCurrencyFromDatabase().map {
-            it.mapToRemoteResponse().mapToDomain()
-        }
-    }
+
 
     override fun getAllCountries(): Single<List<CountriesEntities>> {
         return api.getCountries()
@@ -55,11 +51,7 @@ class CurrencyRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun getCountryListFromLocalStorage(): Single<List<CountriesEntities>> {
-        return countryDAO.getCountryFromDatabase().map {
-            it.mapToCountryRemoteResponse().mapToCountriesDomain()
-        }
-    }
+
 
     override fun getConverterCurrency(
         baseCurrency: String,

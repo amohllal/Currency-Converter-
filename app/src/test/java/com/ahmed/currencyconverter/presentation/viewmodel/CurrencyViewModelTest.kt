@@ -77,7 +77,7 @@ class CurrencyViewModelTest{
         currencyViewModel.currencyLiveData.observeForever(currencyObserver)
 
         // act
-        currencyViewModel.getRemoteCurrency()
+        currencyViewModel.getCurrency()
 
         //assert
         Mockito.verify(currencyObserver, Mockito.times(2))
@@ -89,35 +89,6 @@ class CurrencyViewModelTest{
         assertEquals(currencyList, values[1]?.data)
     }
 
-    @Test
-    fun `getLocalCurrency() then hit loading and success with data`() {
-
-        // arrange
-        val currencyEntity = CurrencyEntities("Albanian Lek", null, "ALL")
-        val currencyEntityII = CurrencyEntities("East Caribbean Dollar", null, "XCD")
-        val currencyList = ArrayList<CurrencyEntities>()
-        currencyList.add(currencyEntity)
-        currencyList.add(currencyEntityII)
-
-        Mockito.`when`(currencyListUseCase.getCurrencyFromDatabase()).thenReturn(
-            Single.just(
-                currencyList
-            )
-        )
-        currencyViewModel.currencyLiveData.observeForever(currencyObserver)
-
-        // act
-        currencyViewModel.getLocalCurrency()
-
-        //assert
-        Mockito.verify(currencyObserver, Mockito.times(2))
-            .onChanged(currenciesCaptor.capture())
-        val values = currenciesCaptor.allValues
-
-        assertEquals(DataStatus.Status.LOADING, values[0]?.status)
-        assertEquals(DataStatus.Status.SUCCESS, values[1]?.status)
-        assertEquals(currencyList, values[1]?.data)
-    }
 
     @Test
     fun `getRemoteCountries() then hit loading and success with data`() {
@@ -143,7 +114,7 @@ class CurrencyViewModelTest{
         currencyViewModel.countriesLiveData.observeForever(countriesObserver)
 
         // act
-        currencyViewModel.getRemoteCountries()
+        currencyViewModel.getCountries()
 
         //assert
         Mockito.verify(countriesObserver, Mockito.times(2))
@@ -156,41 +127,6 @@ class CurrencyViewModelTest{
     }
 
 
-    @Test
-    fun `getLocalCountries() then hit loading and success with data`() {
-
-        // arrange
-        val countryEntity =
-            CountriesEntities("AFG", "AFN", "Afghan afghani", null, "AF", "Afghanistan")
-        val countryEntityII =
-            CountriesEntities(
-                "AIA", "XCD",
-                "East Caribbean dollar", null,
-                "AI", "Anguilla"
-            )
-        val countryList = ArrayList<CountriesEntities>()
-        countryList.add(countryEntity)
-        countryList.add(countryEntityII)
-
-        Mockito.`when`(countryListUseCase.getCountryFromDatabase()).thenReturn(
-            Single.just(
-                countryList
-            )
-        )
-        currencyViewModel.countriesLiveData.observeForever(countriesObserver)
-
-        // act
-        currencyViewModel.getLocalCountries()
-
-        //assert
-        Mockito.verify(countriesObserver, Mockito.times(2))
-            .onChanged(countriesCaptor.capture())
-        val values = countriesCaptor.allValues
-
-        assertEquals(DataStatus.Status.LOADING, values[0]?.status)
-        assertEquals(DataStatus.Status.SUCCESS, values[1]?.status)
-        assertEquals(countryList, values[1]?.data)
-    }
 
     @Test
     fun `getCurrencyConverter() then hit loading and success with data`() {

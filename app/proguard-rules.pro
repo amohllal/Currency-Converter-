@@ -36,7 +36,19 @@
 # hide the original source file name.
 -renamesourcefileattribute SourceFile
 
-
+#keep model classes
+-keep public class com.ahmed.data.model.** {
+  public protected *;
+}
+-keepclassmembers class com.ahmed.data.model.** {
+    private <fields>;
+}
+-keep public class com.ahmed.data.model.local.** {
+  public protected *;
+}
+-keepclassmembers class com.ahmed.data.model.local.** {
+    private <fields>;
+}
 -keep public class com.ahmed.domain.entities.** {
   public protected *;
 }

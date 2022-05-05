@@ -31,7 +31,7 @@ class CurrencyViewModel @Inject constructor(
     val countriesLiveData by lazy { StateLiveData<List<CountriesEntities>>() }
     val currencyConverterLiveData by lazy { StateLiveData<CurrencyConverterEntity>() }
     val currencyListLiveData by lazy { StateLiveData<CurrenciesDate>() }
-    fun getRemoteCurrency() {
+    fun getCurrency() {
         compositeDisposable.add(
             getCurrencyUseCase.invoke()
                 .subscribeOn(ioScheduler)
@@ -46,39 +46,10 @@ class CurrencyViewModel @Inject constructor(
         )
 
     }
-    fun getLocalCurrency() {
-        compositeDisposable.add(
-            getCurrencyUseCase.getCurrencyFromDatabase()
-                .doOnSubscribe { currencyLiveData.postLoading() }
-                .subscribeOn(ioScheduler)
-                .observeOn(mainScheduler)
-                .subscribe({ response ->
-                    currencyLiveData.postSuccess(response) },
-                    { error ->
-                        currencyLiveData.postError(error)
-                        error.printStackTrace()
-                    })
-        )
-    }
 
-    fun getRemoteCountries() {
+    fun getCountries() {
         compositeDisposable.add(
             getCountriesUseCase.invoke()
-                .doOnSubscribe { countriesLiveData.postLoading() }
-                .subscribeOn(ioScheduler)
-                .observeOn(mainScheduler)
-                .subscribe({ response ->
-                    countriesLiveData.postSuccess(response)
-                },
-                    { error ->
-                        countriesLiveData.postError(error)
-                        error.printStackTrace()
-                    })
-        )
-    }
-    fun getLocalCountries() {
-        compositeDisposable.add(
-            getCountriesUseCase.getCountryFromDatabase()
                 .doOnSubscribe { countriesLiveData.postLoading() }
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
