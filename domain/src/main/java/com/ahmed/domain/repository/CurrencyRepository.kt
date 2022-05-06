@@ -13,7 +13,6 @@ interface CurrencyRepository {
     fun getAllCountries() : Single<List<CountriesEntities>>
 
     fun getConverterCurrency(baseCurrency:String,secondCurrency : String) : Single<CurrencyConverterEntity>
-    fun getCurrencyWithDate(baseCurrency:String,secondCurrency : String,date : String) : Single<CurrencyConverterEntity>
 
     fun getCurrencyListWithDate(baseCurrency:String,secondCurrency : String,lastDate : String,currentDate : String) : Single<CurrenciesDate>
 }

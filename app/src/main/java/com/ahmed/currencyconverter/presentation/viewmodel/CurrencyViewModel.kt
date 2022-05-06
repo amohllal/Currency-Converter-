@@ -79,22 +79,6 @@ class CurrencyViewModel @Inject constructor(
         )
     }
 
-/*
-    fun getCurrencyConverterWithDate(baseCurrency: String, secondCurrency: String, date: String) {
-        compositeDisposable.add(
-            getCurrencyConverterWithDate.invoke(baseCurrency, secondCurrency, date)
-                !!.doOnSubscribe { currencyConverterLiveData.postLoading() }
-                .subscribeOn(ioScheduler)
-                .observeOn(mainScheduler)
-                .subscribe({ response ->
-                    currencyConverterLiveData.postSuccess(response)
-                },
-                    { error ->
-                        error.printStackTrace()
-                    })
-        )
-    }
-*/
 
 
     fun getCurrencyListWithDate(baseCurrency: String, secondCurrency: String, lastDate : String, currentDate: String) {
