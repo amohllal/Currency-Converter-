@@ -21,6 +21,10 @@ platform :android do
     gradle(task: "test")
   end
 
+  desc "try this file "
+   lane android distribute.yml do
+   end
+
   desc "Submit a new Build for distributing app using Firebase App Distributions"
    lane :distribute do
           gradle(task: "clean assembleRelease")
