@@ -1,3 +1,4 @@
+name: Fastlane Integration
 on:
   push:
     branches: [ test ]
