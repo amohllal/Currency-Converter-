@@ -25,8 +25,8 @@ platform :android do
    lane :distribute do
           gradle(task: "clean assembleRelease")
           firebase_app_distribution(
-              app: ENV["1:665799284713:android:aac59b7fbd5fca0f6d1d78"],
-              firebase_cli_token: ENV["1//03liKgUbFy_c-CgYIARAAGAMSNwF-L9IrAAmsUOxE_mlC6XoVAwX7n5i-_lhpESOtG4XirFzFeC2nXaAky22iRoelpfW_MOt_XHA"]
+              app: '1:665799284713:android:aac59b7fbd5fca0f6d1d78',
+              firebase_cli_token: '1//03liKgUbFy_c-CgYIARAAGAMSNwF-L9IrAAmsUOxE_mlC6XoVAwX7n5i-_lhpESOtG4XirFzFeC2nXaAky22iRoelpfW_MOt_XHA',
               release_notes_file: "FirebaseAppDistributionConfig/release_notes.txt",
               groups_file: "FirebaseAppDistributionConfig/groups.txt"
           )
