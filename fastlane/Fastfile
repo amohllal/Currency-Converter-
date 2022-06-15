@@ -22,7 +22,7 @@ platform :android do
   end
 
   desc "try this file "
-   lane :android distribute do
+   lane :android do
    end
 
   desc "Submit a new Build for distributing app using Firebase App Distributions"
