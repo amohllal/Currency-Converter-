@@ -24,21 +24,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '2.6' # Not needed with a .ruby-version file
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - run: bundle exec rake
 
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '2.6'
-
-      - name: Install bundle
-        run: |
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
-
-      - name: Distribute app with 🔥 App Distribution 🚀
-        run: bundle exec fastlane distribute.yml
-        env:
-          FIREBASE_APP_ID: '1:665799284713:android:aac59b7fbd5fca0f6d1d78'
+    - name: Distribute app with 🔥 App Distribution 🚀
+      run: bundle exec fastlane distribute.yml
+      env:
+        FIREBASE_APP_ID: '1:665799284713:android:aac59b7fbd5fca0f6d1d78'
 
   apk:
     name: Generate APK
