@@ -20,6 +20,6 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Distribute app with 🔥 App Distribution 🚀
-        run: bundle exec fastlane distribute.yml
+        run: bundle exec fastlane distribute
         env:
           FIREBASE_APP_ID: '1:665799284713:android:aac59b7fbd5fca0f6d1d78'
