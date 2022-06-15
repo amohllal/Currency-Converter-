@@ -27,7 +27,6 @@ platform :android do
           firebase_app_distribution(
               app: '1:665799284713:android:aac59b7fbd5fca0f6d1d78',
               firebase_cli_token: '1//03liKgUbFy_c-CgYIARAAGAMSNwF-L9IrAAmsUOxE_mlC6XoVAwX7n5i-_lhpESOtG4XirFzFeC2nXaAky22iRoelpfW_MOt_XHA',
-              groups_file: "FirebaseAppDistributionConfig/groups.txt"
           )
    end
 
