@@ -27,7 +27,6 @@ class CurrencyViewModel @Inject constructor(
     @Named("Main") private val mainScheduler: Scheduler
 ) : BaseViewModel() {
 
-    //add comment to push repo again in github to test fastlane integration
     val currencyLiveData by lazy { StateLiveData<List<CurrencyEntities>>() }
     val countriesLiveData by lazy { StateLiveData<List<CountriesEntities>>() }
     val currencyConverterLiveData by lazy { StateLiveData<CurrencyConverterEntity>() }
